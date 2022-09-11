@@ -65,6 +65,69 @@ class AppBloobit extends Bloobit<AppState> {
 }
 ```
 
+### Put the Bloobit in the Widget Tree
+You need to wrap your widgets in a BloobitPropagator. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The BloobitPropagator will pass the Bloobit to the children. 
+
+```dart
+class MyApp extends StatelessWidget {
+  final IocContainer container;
+
+  const MyApp(this.container, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: BloobitPropagator<AppBloobit>(
+        bloobit: container.get<AppBloobit>(),
+        child: const Home(),
+      ),
+    );
+  }
+}
+```
+
+### Accessing the Bloobit
+You can access the Bloobit from any widget in the widget tree under the BloobitPropagator. 
+
+```dart
+class CounterDisplay extends StatelessWidget {
+  const CounterDisplay({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        height: 200,
+        width: 200,
+        color: const Color(0xFFEEEEEE),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            if (bloobit.isProcessing)
+              const CircularProgressIndicator()
+            else
+              Text(
+                '${bloobit.callCount}',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
 ### Convert To a Stream
 You can stream state changes from the Bloobit, but we don't do this by default. You can use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming. See the example folder for all the code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) if you like, but that's probably not necessary.
 
