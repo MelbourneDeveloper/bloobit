@@ -64,7 +64,7 @@ class AppState {
 }
 ```
 
-You can easily inspect the state and the Bloobit in the widget tree if you use the dev tools.
+You can easily inspect the state and the Bloobit in the widget tree if you use the dev tools. See the next section about the `BloobitPropagator`
 ![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
 
 ### Put the Bloobit in the Widget Tree
