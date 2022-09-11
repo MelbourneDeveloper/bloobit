@@ -7,7 +7,7 @@ Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packa
 This is the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
 
 ### Implement Business Logic
-Extend Bloobit and send messages or events to the Bloobit via the methods. Call emit when the state changes. 
+Extend [`Bloobit<TState>`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit-class.html) and send messages or events to the `Bloobit` via the methods. Call [`emit`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit/emit.html) when the state changes. 
 
 ```dart
 class AppBloobit extends Bloobit<AppState> {
@@ -35,7 +35,7 @@ class AppBloobit extends Bloobit<AppState> {
 ```
 
 ### State
-We usually use immutable state, but there is no reason you can't use mutable state. Bloobit is agnostic about this. Bloobit is just a wrapper around `setState()`.
+We usually use immutable state, but there is no reason you can't use mutable state. `Bloobit` is agnostic about this. `Bloobit` is just a wrapper around `setState()`.
 
 ```dart
 ///The immutable state of the app
@@ -64,11 +64,11 @@ class AppState {
 }
 ```
 
-You can easily inspect the state and the Bloobit in the widget tree if you use the dev tools. See the next section about the `BloobitPropagator`
+You can easily inspect the state and the `Bloobit` in the widget tree if you use the dev tools. See the next section about the [`BloobitPropagator`](https://pub.dev/documentation/bloobit/latest/bloobit/BloobitPropagator-class.html)
 ![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
 
 ### Put the Bloobit in the Widget Tree
-You need to wrap your widgets in a BloobitPropagator. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The BloobitPropagator will pass the Bloobit to the children. 
+You need to wrap your widgets in a `BloobitPropagator`. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The `BloobitPropagator` will pass the Bloobit to the children. 
 
 ```dart
 class MyApp extends StatelessWidget {
@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
 ```
 
 ### Accessing the Bloobit
-You can access the Bloobit from any widget in the widget tree under the BloobitPropagator. 
+You can access the `Bloobit` from any widget in the widget tree under the BloobitPropagator. Use `BloobitPropagator.of`.
 
 ```dart
 class CounterDisplay extends StatelessWidget {
@@ -131,7 +131,7 @@ class CounterDisplay extends StatelessWidget {
 ```
 
 ### Convert To a Stream
-You can stream state changes from the Bloobit, but we don't do this by default. You can use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming. See the example folder for all the code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) if you like, but that's probably not necessary.
+You can stream state changes from the `Bloobit`, but we don't do this by default. You can use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming. See the example folder for all the code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) if you like, but that's probably not necessary.
 
 ```dart
 void main() {

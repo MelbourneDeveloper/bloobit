@@ -16,7 +16,7 @@ abstract class Bloobit<TState> {
   ///This is the state of the Bloobit on construction
   final TState initialState;
 
-  //When state changes, the Bloobit calls this
+  ///When state changes, the Bloobit calls this. Use this to feed state changes to a Stream
   final void Function(TState) onSetState;
   TState _state;
 
