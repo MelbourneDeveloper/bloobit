@@ -140,13 +140,13 @@ class _HomeState extends
       body: Stack(children: [
         bloobit.displayWidgets
             ? Wrap(children: [
-                CounterDisplay(viewModel: bloobit),
-                CounterDisplay(viewModel: bloobit),
-                CounterDisplay(viewModel: bloobit),
-                CounterDisplay(viewModel: bloobit),
-                CounterDisplay(viewModel: bloobit),
-                CounterDisplay(viewModel: bloobit),
-                CounterDisplay(viewModel: bloobit)
+                CounterDisplay(),
+                CounterDisplay(),
+                CounterDisplay(),
+                CounterDisplay(),
+                CounterDisplay(),
+                CounterDisplay(),
+                CounterDisplay()
               ])
             : Text('X', style: Theme.of(context).textTheme.headline1),
         Align(
@@ -170,15 +170,11 @@ class _HomeState extends
 }
 
 class CounterDisplay extends StatelessWidget {
-  const CounterDisplay({
-    Key? key,
-    required this.viewModel,
-  }) : super(key: key);
-
-  final AppBloobit viewModel;
+  const CounterDisplay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
@@ -191,11 +187,11 @@ class CounterDisplay extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            if (viewModel.isProcessing)
+            if (bloobit.isProcessing)
               const CircularProgressIndicator()
             else
               Text(
-                '${viewModel.callCount}',
+                '${bloobit.callCount}',
                 style: Theme.of(context).textTheme.headline4,
               ),
           ],
