@@ -4,3 +4,5 @@ Add the stuff
 Update the readme and example
 ## 0.0.3-beta
 Analysis options and readme
+## 0.0.4-beta
+Doco fixes

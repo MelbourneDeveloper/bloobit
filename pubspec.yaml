@@ -1,6 +1,6 @@
 name: bloobit
 description: State management, as simple as it gets. Inspired by BloC, but stripped right back.
-version: 0.0.3-beta
+version: 0.0.4-beta
 repository: https://github.com/MelbourneDeveloper/bloobit
 
 environment:
