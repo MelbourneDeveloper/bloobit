@@ -7,7 +7,7 @@ Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packa
 This is the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
 
 ### State
-We usually use immutable state, but there is no reason you can't use mutable state. Bloobit is agnostic about this. Bloobit is also agnostic about the type of state you use. Bloobit is just a wrapper around `setState()`.
+We usually use immutable state, but there is no reason you can't use mutable state. Bloobit is agnostic about this. Bloobit is just a wrapper around `setState()`.
 
 ```dart
 ///The immutable state of the app
@@ -37,8 +37,7 @@ class AppState {
 ```
 
 ### Implementing Logic
-Send messages or events to the Bloobit via the methods. Call emit when the state changes. 
-If the state is mutable, you need to send a new instance of the state anyway.
+Extend Bloobit and send messages or events to the Bloobit via the methods. Call emit when the state changes. 
 
 ```dart
 class AppBloobit extends Bloobit<AppState> {

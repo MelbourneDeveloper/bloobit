@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloobit/bloobit.dart';
 import 'package:flutter/material.dart';
 import 'package:ioc_container/ioc_container.dart';
@@ -38,7 +37,7 @@ class AppBloobit extends Bloobit<AppState> {
   final CountServerService countServerService;
 
   AppBloobit(this.countServerService, {void Function(AppState)? callback})
-      : super(const AppState(0, false, true), callback: callback);
+      : super(const AppState(0, false, true), onSetState: callback);
 
   void hideWidgets() {
     emit(state.copyWith(displayWidgets: false));
