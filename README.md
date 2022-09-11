@@ -6,6 +6,34 @@ Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packa
 
 This is the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
 
+### Implement Business Logic
+Extend Bloobit and send messages or events to the Bloobit via the methods. Call emit when the state changes. 
+
+```dart
+class AppBloobit extends Bloobit<AppState> {
+  int get callCount => state.callCount;
+  bool get isProcessing => state.isProcessing;
+  bool get displayWidgets => state.displayWidgets;
+
+  final CountServerService countServerService;
+
+  AppBloobit(this.countServerService, {void Function(AppState)? callback})
+      : super(const AppState(0, false, true), callback: callback);
+
+  void hideWidgets() {
+    emit(state.copyWith(displayWidgets: false));
+  }
+
+  Future<void> callGetCount() async {
+    emit(state.copyWith(isProcessing: true));
+
+    final callCount = await countServerService.getCallCount();
+
+    emit(state.copyWith(isProcessing: false, callCount: callCount));
+  }
+}
+```
+
 ### State
 We usually use immutable state, but there is no reason you can't use mutable state. Bloobit is agnostic about this. Bloobit is just a wrapper around `setState()`.
 
@@ -38,34 +66,6 @@ class AppState {
 
 You can easily inspect the state and the Bloobit in the widget tree if you use the dev tools.
 ![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
-
-### Implementing Logic
-Extend Bloobit and send messages or events to the Bloobit via the methods. Call emit when the state changes. 
-
-```dart
-class AppBloobit extends Bloobit<AppState> {
-  int get callCount => state.callCount;
-  bool get isProcessing => state.isProcessing;
-  bool get displayWidgets => state.displayWidgets;
-
-  final CountServerService countServerService;
-
-  AppBloobit(this.countServerService, {void Function(AppState)? callback})
-      : super(const AppState(0, false, true), callback: callback);
-
-  void hideWidgets() {
-    emit(state.copyWith(displayWidgets: false));
-  }
-
-  Future<void> callGetCount() async {
-    emit(state.copyWith(isProcessing: true));
-
-    final callCount = await countServerService.getCallCount();
-
-    emit(state.copyWith(isProcessing: false, callCount: callCount));
-  }
-}
-```
 
 ### Put the Bloobit in the Widget Tree
 You need to wrap your widgets in a BloobitPropagator. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The BloobitPropagator will pass the Bloobit to the children. 
