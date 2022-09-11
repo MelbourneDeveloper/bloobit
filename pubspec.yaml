@@ -1,5 +1,5 @@
 name: bloobit
-description: State management, as simple as it gets
+description: State management, as simple as it gets. Inspired by BloC, but stripped right back.
 version: 0.0.1-beta
 repository: https://github.com/MelbourneDeveloper/bloobit
 
