@@ -1,5 +1,6 @@
 library bloobit;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 ///This faciliates separation of Business Logic and Presentation. You must extend it.
@@ -60,6 +61,8 @@ class BloobitPropagator<T extends Bloobit<dynamic>> extends InheritedWidget {
   ///This is the [Bloobit] that will be propagated
   final T bloobit;
 
+  dynamic get state => bloobit.state;
+
   ///Gets the [Bloobit] from the widget tree
   static BloobitPropagator<T> of<T extends Bloobit<dynamic>>(
       BuildContext context) {
@@ -73,4 +76,11 @@ class BloobitPropagator<T extends Bloobit<dynamic>> extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant final InheritedWidget oldWidget) =>
       bloobit != (oldWidget as BloobitPropagator<T>).bloobit;
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<T>('bloobit', bloobit));
+    properties.add(DiagnosticsProperty<dynamic>('state', state));
+  }
 }

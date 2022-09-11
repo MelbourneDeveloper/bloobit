@@ -36,6 +36,9 @@ class AppState {
 }
 ```
 
+You can easily inspect the state and the Bloobit in the widget tree if you use the dev tools.
+![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
+
 ### Implementing Logic
 Extend Bloobit and send messages or events to the Bloobit via the methods. Call emit when the state changes. 
 
