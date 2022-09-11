@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
 ```
 
 ### Accessing the Bloobit
-You can access the `Bloobit` from any widget in the widget tree under the BloobitPropagator. Use `BloobitPropagator.of`.
+You can access the `Bloobit` from any widget in the widget tree under the BloobitPropagator. Use [`BloobitPropagator.of`](https://pub.dev/documentation/bloobit/latest/bloobit/BloobitPropagator/of.html).
 
 ```dart
 class CounterDisplay extends StatelessWidget {
