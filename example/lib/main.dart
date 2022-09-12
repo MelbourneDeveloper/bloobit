@@ -28,7 +28,8 @@ class AppState {
       );
 }
 
-///This basically works like a Cubit but you call setState instead of emit
+///This extends `Bloobit` and implements the business logic with methods.
+///When the state changes, we call `setState()`
 class AppBloobit extends Bloobit<AppState> {
   int get callCount => state.callCount;
   bool get isProcessing => state.isProcessing;
