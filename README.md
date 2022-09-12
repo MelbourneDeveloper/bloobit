@@ -2,7 +2,7 @@
 
 [Flutter Sample and code on Dartpad](https://dartpad.dev/?id=47b6619b67348dbd3c53e3563463a707)
 
-Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packages/bloc) but without streams (or any [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern)) by default. Bloobit and the Bloc pattern aim to separate presentation from business logic, but Bloobit is not an implementation of the Bloc pattern. You just call `setState()` when the state changes. There is no magic. There are only [87 lines of code](https://github.com/MelbourneDeveloper/bloobit/blob/main/lib/bloobit.dart) that you can read and understand.
+Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packages/bloc) but without streams (or any [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern)) by default. Bloobit and the Bloc pattern aim to separate presentation from business logic, but Bloobit is not an implementation of the Bloc pattern. You just call `setState()` when the state changes. There is no magic. There are only [90 lines of code](https://github.com/MelbourneDeveloper/bloobit/blob/main/lib/bloobit.dart) that you can read and understand.
 
 Cubit is an implementation of the Bloc pattern in the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
 
