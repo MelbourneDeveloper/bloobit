@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 ///This faciliates separation of Business Logic and Presentation. You must extend it.
 ///Pass the setState function in by calling attach, or use [BloobitPropagator] to do it for you.
-///The [Bloobit] will call the setState function when [emit] is called.
+///The [Bloobit] will call the setState function when [setState] is called.
 abstract class Bloobit<TState> {
   Bloobit(this.initialState, {void Function(TState)? onSetState})
       : _state = initialState,
@@ -18,16 +18,17 @@ abstract class Bloobit<TState> {
 
   ///When state changes, the Bloobit calls this. Use this to feed state changes to a Stream
   final void Function(TState) onSetState;
-  TState _state;
 
   ///This is the current state of the Bloobit
   TState get state => _state;
 
+  TState _state;
+
   ///Pass in the setState function from your state here
   void attach(void Function(VoidCallback fn) setState) => _setState = setState;
 
-  ///This calls the setState function and updates the state
-  void emit(TState state) {
+  ///This calls the setState() function and updates the state in the setState() callback
+  void setState(TState state) {
     assert(_setState != null, 'You must call attach');
 
     //This is so we can hook up a stream or any other reactive listener

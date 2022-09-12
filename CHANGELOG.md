@@ -6,3 +6,5 @@ Update the readme and example
 Analysis options and readme
 ## 0.0.4-beta
 Doco fixes
+## 1.0.1-beta
+Rename `emit` to `setState`

@@ -28,7 +28,7 @@ class AppState {
       );
 }
 
-///This basically works like a Cubit
+///This basically works like a Cubit but you call setState instead of emit
 class AppBloobit extends Bloobit<AppState> {
   int get callCount => state.callCount;
   bool get isProcessing => state.isProcessing;
@@ -36,19 +36,19 @@ class AppBloobit extends Bloobit<AppState> {
 
   final CountServerService countServerService;
 
-  AppBloobit(this.countServerService, {void Function(AppState)? callback})
-      : super(const AppState(0, false, true), onSetState: callback);
+  AppBloobit(this.countServerService, {void Function(AppState)? onSetState})
+      : super(const AppState(0, false, true), onSetState: onSetState);
 
   void hideWidgets() {
-    emit(state.copyWith(displayWidgets: false));
+    setState(state.copyWith(displayWidgets: false));
   }
 
   Future<void> callGetCount() async {
-    emit(state.copyWith(isProcessing: true));
+    setState(state.copyWith(isProcessing: true));
 
     final callCount = await countServerService.getCallCount();
 
-    emit(state.copyWith(isProcessing: false, callCount: callCount));
+    setState(state.copyWith(isProcessing: false, callCount: callCount));
   }
 }
 
@@ -80,7 +80,7 @@ void main() {
     ..addStream<AppState>()
     //The Bloobit
     ..addSingleton((con) => AppBloobit(con.get<CountServerService>(),
-        callback: (s) =>
+        onSetState: (s) =>
             //Streams state changes to the AppState stream
             con.get<StreamController<AppState>>().add(s)));
 

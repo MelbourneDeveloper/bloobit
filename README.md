@@ -2,14 +2,15 @@
 
 [Flutter Sample and code on Dartpad](https://dartpad.dev/?id=47b6619b67348dbd3c53e3563463a707)
 
-Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packages/bloc) but without the streams by default. This might look familiar. Cubit is an implementation of the Bloc pattern. The Bloc pattern aims to separate presentation from business logic. However, the Bloc pattern can add complexity because it depends on Streams. Bloobit aims to simplify the Bloc pattern by removing the need for streams and focuses on the core concept of calling `setState()` when the state changes. There is no magic. There are only [78 lines of code](https://github.com/MelbourneDeveloper/bloobit/blob/main/lib/bloobit.dart) that you can read and understand.
+Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packages/bloc) but without streams (or any [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern)) by default. Bloobit and the Bloc pattern aim to separate presentation from business logic, but Bloobit is not an implementation of the Bloc pattern. You just call `setState()` when the state changes. There is no magic. There are only [87 lines of code](https://github.com/MelbourneDeveloper/bloobit/blob/main/lib/bloobit.dart) that you can read and understand.
 
-This is the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
+Cubit is an implementation of the Bloc pattern in the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
 
 ### Implement Business Logic
-Extend [`Bloobit<TState>`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit-class.html) and send messages or events to the `Bloobit` via the methods. Call [`emit`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit/emit.html) when the state changes. 
+Extend [`Bloobit<TState>`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit-class.html) and send messages or events to the `Bloobit` via the methods. Call [`setState`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit/setState.html) when the state changes. 
 
 ```dart
+///This basically works like a Cubit but you call setState instead of emit
 class AppBloobit extends Bloobit<AppState> {
   int get callCount => state.callCount;
   bool get isProcessing => state.isProcessing;
@@ -17,19 +18,19 @@ class AppBloobit extends Bloobit<AppState> {
 
   final CountServerService countServerService;
 
-  AppBloobit(this.countServerService, {void Function(AppState)? callback})
-      : super(const AppState(0, false, true), callback: callback);
+  AppBloobit(this.countServerService, {void Function(AppState)? onSetState})
+      : super(const AppState(0, false, true), onSetState: onSetState);
 
   void hideWidgets() {
-    emit(state.copyWith(displayWidgets: false));
+    setState(state.copyWith(displayWidgets: false));
   }
 
   Future<void> callGetCount() async {
-    emit(state.copyWith(isProcessing: true));
+    setState(state.copyWith(isProcessing: true));
 
     final callCount = await countServerService.getCallCount();
 
-    emit(state.copyWith(isProcessing: false, callCount: callCount));
+    setState(state.copyWith(isProcessing: false, callCount: callCount));
   }
 }
 ```
@@ -64,11 +65,11 @@ class AppState {
 }
 ```
 
-You can easily inspect the state and the `Bloobit` in the widget tree if you use the dev tools. See the next section about the [`BloobitPropagator`](https://pub.dev/documentation/bloobit/latest/bloobit/BloobitPropagator-class.html)
+Using the dev tools, you can easily inspect the state and the `Bloobit` in the widget tree. See the next section about the [`BloobitPropagator`](https://pub.dev/documentation/bloobit/latest/bloobit/BloobitPropagator-class.html)
 ![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
 
 ### Put the Bloobit in the Widget Tree
-You need to wrap your widgets in a `BloobitPropagator`. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The `BloobitPropagator` will pass the Bloobit to the children. 
+If you want to nest widgets, you need to wrap your widgets in a `BloobitPropagator`. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The `BloobitPropagator` will pass the Bloobit to the children. 
 
 ```dart
 class MyApp extends StatelessWidget {
