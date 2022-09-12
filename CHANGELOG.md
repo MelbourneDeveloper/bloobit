@@ -10,3 +10,6 @@ Doco fixes
 Rename `emit` to `setState`
 ## 1.0.2-beta
 Documentation fixes
+## 1.0.3-beta
+Don't call `setState` if `State` is not mounted
+

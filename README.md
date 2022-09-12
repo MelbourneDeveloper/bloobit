@@ -133,7 +133,7 @@ class CounterDisplay extends StatelessWidget {
 ```
 
 ### Convert To a Stream
-You can stream state changes from the `Bloobit`, but we don't do this by default. You can use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming. See the example folder for all the code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) if you like, but that's probably not necessary.
+Bloobit is designed to work with only one `StatefulWidget`. As you can see in the example, you don't need this to power multiple widgets. Bloc is designed to work with many, but most of the time, it is not necessary to work with multiple `StatefulWidget`s. However, you can stream state changes from the `Bloobit` and use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming for multiple listeners.  See the example folder for the streaming code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) or multiple other `StatefulWidget`s.
 
 ```dart
 void main() {

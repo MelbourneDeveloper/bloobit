@@ -41,12 +41,15 @@ abstract class Bloobit<TState> {
 }
 
 ///Use with State class to automate the attach method
+///Note: [attach] will not call setState if the state is not mounted
 mixin AttachesSetState<TWidget extends StatefulWidget,
     TCallsSetState extends Bloobit<dynamic>> on State<TWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    BloobitPropagator.of<TCallsSetState>(context).bloobit.attach(setState);
+    BloobitPropagator.of<TCallsSetState>(context)
+        .bloobit
+        .attach((s) => mounted ? setState(s) : null);
   }
 }
 
