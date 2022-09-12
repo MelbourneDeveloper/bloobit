@@ -10,7 +10,8 @@ Cubit is an implementation of the Bloc pattern in the [Bloc library](https://blo
 Extend [`Bloobit<TState>`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit-class.html) and send messages or events to the `Bloobit` via the methods. Call [`setState`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit/setState.html) when the state changes. 
 
 ```dart
-///This basically works like a Cubit but you call setState instead of emit
+///This extends `Bloobit` and implements the business logic with methods.
+///When the state changes, we call `setState()`
 class AppBloobit extends Bloobit<AppState> {
   int get callCount => state.callCount;
   bool get isProcessing => state.isProcessing;
