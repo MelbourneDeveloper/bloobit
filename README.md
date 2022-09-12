@@ -144,7 +144,7 @@ void main() {
     ..addStream<AppState>()
     //The Bloobit
     ..addSingleton((con) => AppBloobit(con.get<CountServerService>(),
-        callback: (s) =>
+        onSetState: (s) =>
             //Streams state changes to the AppState stream
             con.get<StreamController<AppState>>().add(s)));
 
