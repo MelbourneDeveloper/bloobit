@@ -4,3 +4,5 @@ pubspec.lock
 .dart_tool/
 
 .DS_Store
+
+coverage/

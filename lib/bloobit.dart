@@ -11,7 +11,7 @@ abstract class Bloobit<TState> {
       : _state = initialState,
         onSetState = onSetState ?? ((s) {});
 
-  late final void Function(VoidCallback fn)? _setState;
+  void Function(VoidCallback fn)? _setState;
 
   ///This is the state of the Bloobit on construction
   final TState initialState;
