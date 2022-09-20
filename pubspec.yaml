@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  ioc_container: ^0.7.0
+  austerity: ^0.0.5-beta
   dart_code_metrics: ^4.17.1
   flutter_test:
     sdk: flutter
