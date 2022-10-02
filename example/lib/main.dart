@@ -176,8 +176,8 @@ class _HomeState extends
 
 class CounterDisplay extends StatelessWidget {
   const CounterDisplay({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
