@@ -1,7 +1,7 @@
 name: example
 description: A new Flutter project.
 
-publish_to: "none" 
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -11,18 +11,16 @@ environment:
 dependencies:
   bloobit:
     path: ../
+  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   ioc_container: ^0.7.0
 
-
 dev_dependencies:
-  austerity: ^0.0.5-beta
+  austerity: ^0.0.9-beta
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true

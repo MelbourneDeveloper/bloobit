@@ -102,3 +102,62 @@ class BloobitPropagator<T extends Bloobit<dynamic>> extends InheritedWidget {
       ..add(DiagnosticsProperty<dynamic>('state', state));
   }
 }
+
+///A stateful widget that uses [Bloobit] instead of [State]
+class BloobitWidget<TBloobit extends Bloobit<dynamic>> extends StatefulWidget {
+  ///Constructs a BloobitWidget
+  const BloobitWidget({
+    required this.bloobit,
+    required this.builder,
+    super.key,
+  });
+
+  ///The Bloobit for the widget
+  final TBloobit bloobit;
+
+  ///The builder for the widget. This should return a [StatelessWidget] and the
+  ///widget can access the [Bloobit]
+  final Widget Function(
+    BuildContext context,
+    TBloobit bloobit,
+  ) builder;
+
+  @override
+  // ignore: no_logic_in_create_state
+  State<StatefulWidget> createState() => _BloobitWidgetState<TBloobit>(
+        builder,
+        bloobit,
+      );
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<TBloobit>('bloobit', bloobit))
+      ..add(
+        DiagnosticsProperty<dynamic>('builder', builder),
+      );
+  }
+}
+
+class _BloobitWidgetState<TBloobit extends Bloobit<dynamic>>
+    extends State<BloobitWidget<TBloobit>> {
+  _BloobitWidgetState(
+    this._builder,
+    this._bloobit,
+  ) {
+    _bloobit.attach((s) => mounted ? setState(s) : null);
+  }
+  final TBloobit _bloobit;
+
+  final Widget Function(
+    BuildContext context,
+    TBloobit bloobit,
+  ) _builder;
+
+  @override
+  Widget build(BuildContext context) => _builder(
+        context,
+        _bloobit,
+      );
+}

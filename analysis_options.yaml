@@ -1,5 +1,7 @@
 include: package:austerity/analysis_options.yaml
 
+
+
 dart_code_metrics:
   anti-patterns:
     - long-method:
