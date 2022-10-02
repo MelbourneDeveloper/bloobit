@@ -31,10 +31,6 @@ class AppState {
 ///This extends `Bloobit` and implements the business logic with methods.
 ///When the state changes, we call `setState()`
 class AppBloobit extends Bloobit<AppState> {
-  int get callCount => state.callCount;
-  bool get isProcessing => state.isProcessing;
-  bool get displayWidgets => state.displayWidgets;
-
   final CountServerService countServerService;
 
   AppBloobit(this.countServerService, {void Function(AppState)? onSetState})
@@ -108,45 +104,38 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BloobitPropagator<AppBloobit>(
+      home: BloobitWidget<AppBloobit>(
         bloobit: container.get<AppBloobit>(),
-        child: const Home(),
+        builder: (context, bloobit) => Home(
+          bloobit,
+        ),
       ),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Home extends StatelessWidget {
+  const Home(this.bloobit, {super.key});
 
-  @override
-  State<Home> createState() => _HomeState();
-}
+  final AppBloobit bloobit;
 
-class _HomeState extends
-    //This is a normal State class
-    State<Home>
-    with
-        //This automatically adds the ability to call setState() on the model
-        AttachesSetState<Home, AppBloobit> {
   @override
   Widget build(BuildContext context) {
-    final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
     return Scaffold(
       appBar: AppBar(
         title:
             const Text("Managing Up The State with Management-like Managers"),
       ),
       body: Stack(children: [
-        bloobit.displayWidgets
+        bloobit.state.displayWidgets
             ? Wrap(children: [
-                CounterDisplay(),
-                CounterDisplay(),
-                CounterDisplay(),
-                CounterDisplay(),
-                CounterDisplay(),
-                CounterDisplay(),
-                CounterDisplay()
+                CounterDisplay(bloobit.state),
+                CounterDisplay(bloobit.state),
+                CounterDisplay(bloobit.state),
+                CounterDisplay(bloobit.state),
+                CounterDisplay(bloobit.state),
+                CounterDisplay(bloobit.state),
+                CounterDisplay(bloobit.state)
               ])
             : Text('X', style: Theme.of(context).textTheme.headline1),
         Align(
@@ -170,33 +159,35 @@ class _HomeState extends
 }
 
 class CounterDisplay extends StatelessWidget {
-  const CounterDisplay({Key? key}) : super(key: key);
+  const CounterDisplay(
+    this.state, {
+    Key? key,
+  }) : super(key: key);
+
+  final AppState state;
 
   @override
-  Widget build(BuildContext context) {
-    final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        height: 200,
-        width: 200,
-        color: const Color(0xFFEEEEEE),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            if (bloobit.isProcessing)
-              const CircularProgressIndicator()
-            else
-              Text(
-                '${bloobit.callCount}',
-                style: Theme.of(context).textTheme.headline4,
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          height: 200,
+          width: 200,
+          color: const Color(0xFFEEEEEE),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
               ),
-          ],
+              if (state.isProcessing)
+                const CircularProgressIndicator()
+              else
+                Text(
+                  '${state.callCount}',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

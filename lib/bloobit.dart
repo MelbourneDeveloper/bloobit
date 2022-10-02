@@ -88,3 +88,46 @@ class BloobitPropagator<T extends Bloobit<dynamic>> extends InheritedWidget {
     properties.add(DiagnosticsProperty<dynamic>('state', state));
   }
 }
+
+class BloobitWidget<TBloobit extends Bloobit<dynamic>> extends StatefulWidget {
+  const BloobitWidget({
+    required this.bloobit,
+    required this.builder,
+    final Key? key,
+  });
+
+  final TBloobit bloobit;
+  final Widget Function(
+    BuildContext context,
+    TBloobit bloobit,
+  ) builder;
+
+  @override
+  State<StatefulWidget> createState() => BloobitWidgetState<TBloobit>(
+        builder,
+        bloobit,
+      );
+}
+
+class BloobitWidgetState<TBloobit extends Bloobit<dynamic>>
+    extends State<BloobitWidget<TBloobit>> {
+  final TBloobit bloobit;
+
+  BloobitWidgetState(
+    this.builder,
+    this.bloobit,
+  ) {
+    bloobit.attach((s) => mounted ? setState(s) : null);
+  }
+
+  final Widget Function(
+    BuildContext context,
+    TBloobit bloobit,
+  ) builder;
+
+  @override
+  Widget build(BuildContext context) => builder(
+        context,
+        bloobit,
+      );
+}
