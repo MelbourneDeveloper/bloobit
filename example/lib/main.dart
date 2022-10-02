@@ -6,15 +6,14 @@ import 'package:ioc_container/ioc_container.dart';
 ///The immutable state of the app
 @immutable
 class AppState {
-  final int callCount;
-  final bool isProcessing;
-  final bool displayWidgets;
-
   const AppState(
     this.callCount,
     this.isProcessing,
     this.displayWidgets,
   );
+  final int callCount;
+  final bool isProcessing;
+  final bool displayWidgets;
 
   AppState copyWith({
     int? callCount,
@@ -31,10 +30,9 @@ class AppState {
 ///This extends `Bloobit` and implements the business logic with methods.
 ///When the state changes, we call `setState()`
 class AppBloobit extends Bloobit<AppState> {
-  final CountServerService countServerService;
-
   AppBloobit(this.countServerService, {void Function(AppState)? onSetState})
       : super(const AppState(0, false, true), onSetState: onSetState);
+  final CountServerService countServerService;
 
   void hideWidgets() {
     setState(state.copyWith(displayWidgets: false));
@@ -92,9 +90,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final IocContainer container;
-
   const MyApp(this.container, {super.key});
+  final IocContainer container;
 
   @override
   Widget build(BuildContext context) {
