@@ -17,6 +17,7 @@ dependencies:
   ioc_container: ^0.7.0
 
 dev_dependencies:
+  austerity: 0.0.9-beta
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
