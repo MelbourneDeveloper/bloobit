@@ -52,6 +52,8 @@ class CountServerService {
   int _counter = 0;
   Future<int> getCallCount() =>
       Future<int>.delayed(const Duration(seconds: 1), () async {
+        //If we return _counter++ the value is incorrect. Something strange here
+        // ignore: join_return_with_assignment
         _counter++;
         return _counter;
       });
