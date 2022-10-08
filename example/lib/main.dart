@@ -58,6 +58,7 @@ class CountServerService {
         //If we return _counter++ the value is incorrect. Something strange here
         // ignore: join_return_with_assignment
         _counter++;
+        
         return _counter;
       });
 }
