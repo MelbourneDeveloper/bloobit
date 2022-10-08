@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables,
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'package:bloobit/bloobit.dart';
 import 'package:flutter/material.dart';
@@ -76,12 +79,16 @@ void main() {
     //Adds a Stream for AppState changes
     ..addStream<AppState>()
     //The Bloobit
-    ..addSingleton((con) => AppBloobit(con.get<CountServerService>(),
+    ..addSingleton(
+      (con) => AppBloobit(
+        con.get<CountServerService>(),
         onSetState: (s) =>
             //Streams state changes to the AppState stream
-            con.get<StreamController<AppState>>().add(s)));
+            con.get<StreamController<AppState>>().add(s),
+      ),
+    );
 
-  var container = builder.toContainer();
+  final container = builder.toContainer();
 
   container
       .get<Stream<AppState>>()
@@ -123,7 +130,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:
-            const Text("Managing Up The State with Management-like Managers"),
+            const Text('Managing Up The State with Management-like Managers'),
       ),
       body: Stack(children: [
         bloobit.state.displayWidgets
@@ -145,14 +152,9 @@ class Home extends StatelessWidget {
               tooltip: 'Increment',
               child: const Icon(Icons.add),
             ),
-            FloatingActionButton(
-              onPressed: () => bloobit.hideWidgets(),
-              tooltip: 'X',
-              child: const Icon(Icons.close),
-            )
-          ]),
-        ),
-      ]),
+          ),
+        ],
+      ),
     );
   }
 }
