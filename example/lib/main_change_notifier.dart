@@ -1,10 +1,12 @@
-import 'package:bloobit/bloobit.dart';
 import 'package:flutter/material.dart';
 
-class AppBloobit extends Bloobit<int> {
-  AppBloobit() : super(0);
+class AppChangeNotifier extends ChangeNotifier {
+  int counter = 0;
 
-  void increment() => setState(state + 1);
+  void increment() {
+    counter++;
+    notifyListeners();
+  }
 }
 
 void main() {
@@ -15,30 +17,34 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: 'Bloobit Sample',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+  Widget build(BuildContext context) {
+    final appChangeNotifier = AppChangeNotifier();
+
+    return MaterialApp(
+      title: 'Change Notifier Sample',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: AnimatedBuilder(
+        animation: appChangeNotifier,
+        builder: (context, bloobit) => MyHomePage(
+          title: 'Change Notifier Sample',
+          changeNotifier: appChangeNotifier,
         ),
-        home: BloobitWidget<AppBloobit>(
-          bloobit: AppBloobit(),
-          builder: (context, bloobit) => MyHomePage(
-            title: 'Bloobit Sample',
-            bloobit: bloobit,
-          ),
-        ),
-      );
+      ),
+    );
+  }
 }
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
-    required this.bloobit,
+    required this.changeNotifier,
     required this.title,
     super.key,
   });
 
   final String title;
-  final AppBloobit bloobit;
+  final AppChangeNotifier changeNotifier;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -53,14 +59,14 @@ class MyHomePage extends StatelessWidget {
                 'You have pushed the button this many times:',
               ),
               Text(
-                '${bloobit.state}',
+                '${changeNotifier.counter}',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: bloobit.increment,
+          onPressed: changeNotifier.increment,
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ),
