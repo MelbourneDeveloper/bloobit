@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppChangeNotifier extends ChangeNotifier {
+  //Notice that the state is mutable by default, but you can use an immutable
+  //type if you want
   int counter = 0;
 
   void increment() {
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
         animation: appChangeNotifier,
         builder: (context, bloobit) => MyHomePage(
           title: 'Change Notifier Sample',
-          changeNotifier: appChangeNotifier,
+          appChangeNotifier: appChangeNotifier,
         ),
       ),
     );
@@ -38,13 +40,13 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({
-    required this.changeNotifier,
+    required this.appChangeNotifier,
     required this.title,
     super.key,
   });
 
   final String title;
-  final AppChangeNotifier changeNotifier;
+  final AppChangeNotifier appChangeNotifier;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -59,14 +61,14 @@ class MyHomePage extends StatelessWidget {
                 'You have pushed the button this many times:',
               ),
               Text(
-                '${changeNotifier.counter}',
+                '${appChangeNotifier.counter}',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: changeNotifier.increment,
+          onPressed: appChangeNotifier.increment,
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ),
