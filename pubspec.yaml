@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
 
 dev_dependencies:
   austerity: ^0.0.9-beta
