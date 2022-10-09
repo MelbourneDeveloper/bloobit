@@ -2,7 +2,8 @@ import 'package:bloobit/bloobit.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+// ignore: depend_on_referenced_packages
+import 'package:ioc_container/ioc_container.dart';
 //ignore: avoid_relative_lib_imports
 import '../example/lib/main.dart';
 
@@ -10,13 +11,13 @@ void main() {
   testWidgets(
     //This tests the example app and therefore the Bloobit library
     //It is a good example of how to test Bloobit apps
-    //100% test coverage and absolutely nothing ties this test to Bloobit
+    //Nothing ties this test to Bloobit
     //You could replace the Bloobit with a Cubit and the test would still pass
     'Test The Example App',
     (tester) async {
       var streamCount = 0;
 
-      final container = compose();
+      final container = compose() as IocContainer;
 
       //Listen to the stream
       //Note: streams are not a core part of Bloobit but we can attach them and
