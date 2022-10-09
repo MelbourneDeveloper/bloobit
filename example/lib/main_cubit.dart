@@ -20,14 +20,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final appCubit = AppCubit();
     return MaterialApp(
-      title: 'Bloobit Sample',
+      title: 'Cubit Sample',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: BlocBuilder<AppCubit, int>(
         bloc: appCubit,
         builder: (context, state) => MyHomePage(
-          title: 'Bloobit Sample',
+          title: 'Cubit Sample',
           bloc: appCubit,
         ),
       ),
