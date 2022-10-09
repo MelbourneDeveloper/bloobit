@@ -73,10 +73,12 @@ extension IocContainerBuilderExtensions on IocContainerBuilder {
 
 // coverage:ignore-start
 void main() {
-  runApp(MyApp(
-    //Register services and the Bloobit with an IoC container
-    compose(),
-  ));
+  runApp(
+    MyApp(
+      //Register services and the Bloobit with an IoC container
+      compose(),
+    ),
+  );
 }
 // coverage:ignore-end
 
@@ -96,14 +98,7 @@ IocContainer compose() {
       ),
     );
 
-  final container = builder.toContainer();
-
-  container
-      .get<Stream<AppState>>()
-      //Stream the state changes to the debug console
-      .listen((appState) => debugPrint(appState.callCount.toString()));
-
-  runApp(MyApp(container));
+  return builder.toContainer();
 }
 
 class MyApp extends StatelessWidget {

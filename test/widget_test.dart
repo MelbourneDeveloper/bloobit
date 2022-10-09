@@ -1,7 +1,10 @@
 import 'package:bloobit/bloobit.dart';
-import '../example/lib/main.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+//ignore: avoid_relative_lib_imports
+import '../example/lib/main.dart';
 
 void main() {
   testWidgets(
@@ -45,14 +48,18 @@ void main() {
   );
 
   testWidgets(
-    //This test tests the widgets and physically acccesses the Bloobit via BloobitPropagator. You shouldn't do this because it couples your test to the Bloobit library. But, this is an example of how easy it is if you need to do this.
+    //This test tests the widgets and physically acccesses the Bloobit via
+    //BloobitPropagator. You shouldn't do this because it couples your test to
+    //the Bloobit library. But, this is an example of how easy it is if you
+    //need to do this.
     'Test The Example App With Bloobit Access',
     (tester) async {
       await tester.pumpWidget(MyApp(compose()));
 
       //Get the bloobit and check the state
       final bloobitPropagator = tester.widget<BloobitPropagator<AppBloobit>>(
-          find.byKey(const ValueKey('BloobitPropagator')).first);
+        find.byKey(const ValueKey('BloobitPropagator')).first,
+      );
 
       expect(bloobitPropagator.bloobit, isNotNull);
       expect(bloobitPropagator.bloobit.state.callCount, 0);
