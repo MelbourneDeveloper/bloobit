@@ -185,6 +185,7 @@ class CounterDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
+    
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
