@@ -1,11 +1,7 @@
 import 'package:bloobit/bloobit.dart';
-
+import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-// ignore: depend_on_referenced_packages
-import 'package:ioc_container/ioc_container.dart';
-//ignore: avoid_relative_lib_imports
-import '../example/lib/main.dart';
 
 void main() {
   testWidgets(
@@ -17,7 +13,7 @@ void main() {
     (tester) async {
       var streamCount = 0;
 
-      final container = compose() as IocContainer;
+      final container = compose();
 
       //Listen to the stream
       //Note: streams are not a core part of Bloobit but we can attach them and
