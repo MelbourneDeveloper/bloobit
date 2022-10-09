@@ -136,8 +136,7 @@ class _HomeState extends
 
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('Managing Up The State with Management-like Managers'),
+        title: const Text('Bloobit Sample'),
       ),
       body: Stack(
         children: [
