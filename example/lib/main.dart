@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables,
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'package:bloobit/bloobit.dart';
 import 'package:flutter/material.dart';
@@ -6,15 +9,14 @@ import 'package:ioc_container/ioc_container.dart';
 ///The immutable state of the app
 @immutable
 class AppState {
-  final int callCount;
-  final bool isProcessing;
-  final bool displayWidgets;
-
   const AppState(
     this.callCount,
     this.isProcessing,
     this.displayWidgets,
   );
+  final int callCount;
+  final bool isProcessing;
+  final bool displayWidgets;
 
   AppState copyWith({
     int? callCount,
@@ -31,14 +33,9 @@ class AppState {
 ///This extends `Bloobit` and implements the business logic with methods.
 ///When the state changes, we call `setState()`
 class AppBloobit extends Bloobit<AppState> {
-  int get callCount => state.callCount;
-  bool get isProcessing => state.isProcessing;
-  bool get displayWidgets => state.displayWidgets;
-
-  final CountServerService countServerService;
-
   AppBloobit(this.countServerService, {void Function(AppState)? onSetState})
       : super(const AppState(0, false, true), onSetState: onSetState);
+  final CountServerService countServerService;
 
   void hideWidgets() {
     setState(state.copyWith(displayWidgets: false));
@@ -58,6 +55,8 @@ class CountServerService {
   int _counter = 0;
   Future<int> getCallCount() =>
       Future<int>.delayed(const Duration(seconds: 1), () async {
+        //If we return _counter++ the value is incorrect. Something strange here
+        // ignore: join_return_with_assignment
         _counter++;
         return _counter;
       });
@@ -88,34 +87,41 @@ IocContainer compose() {
     //Adds a Stream for AppState changes
     ..addStream<AppState>()
     //The Bloobit
-    ..addSingleton((con) => AppBloobit(con.get<CountServerService>(),
+    ..addSingleton(
+      (con) => AppBloobit(
+        con.get<CountServerService>(),
         onSetState: (s) =>
             //Streams state changes to the AppState stream
-            con.get<StreamController<AppState>>().add(s)));
+            con.get<StreamController<AppState>>().add(s),
+      ),
+    );
 
-  return builder.toContainer();
+  final container = builder.toContainer();
+
+  container
+      .get<Stream<AppState>>()
+      //Stream the state changes to the debug console
+      .listen((appState) => debugPrint(appState.callCount.toString()));
+
+  runApp(MyApp(container));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp(this.container, {super.key});
   final IocContainer container;
 
-  const MyApp(this.container, {super.key});
-
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BloobitPropagator<AppBloobit>(
-        key: const ValueKey('BloobitPropagator'),
-        bloobit: container.get<AppBloobit>(),
-        child: const Home(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: BloobitPropagator<AppBloobit>(
+          bloobit: container.get<AppBloobit>(),
+          child: const Home(),
+        ),
+      );
 }
 
 class Home extends StatefulWidget {
@@ -137,11 +143,13 @@ class _HomeState extends
     return Scaffold(
       appBar: AppBar(
         title:
-            const Text("Managing Up The State with Management-like Managers"),
+            const Text('Managing Up The State with Management-like Managers'),
       ),
-      body: Stack(children: [
-        bloobit.displayWidgets
-            ? Wrap(children: [
+      body: Stack(
+        children: [
+          if (bloobit.state.displayWidgets)
+            Wrap(
+              children: [
                 CounterDisplay(),
                 CounterDisplay(),
                 CounterDisplay(),
@@ -149,30 +157,37 @@ class _HomeState extends
                 CounterDisplay(),
                 CounterDisplay(),
                 CounterDisplay()
-              ])
-            : Text('X', style: Theme.of(context).textTheme.headline1),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Row(children: [
-            FloatingActionButton(
-              onPressed: () => bloobit.callGetCount(),
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            ),
-            FloatingActionButton(
-              onPressed: () => bloobit.hideWidgets(),
-              tooltip: 'X',
-              child: const Icon(Icons.close),
+              ],
             )
-          ]),
-        ),
-      ]),
+          else
+            Text('X', style: Theme.of(context).textTheme.headline1),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              children: [
+                FloatingActionButton(
+                  onPressed: bloobit.callGetCount,
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.add),
+                ),
+                FloatingActionButton(
+                  onPressed: bloobit.hideWidgets,
+                  tooltip: 'X',
+                  child: const Icon(Icons.close),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class CounterDisplay extends StatelessWidget {
-  const CounterDisplay({Key? key}) : super(key: key);
+  const CounterDisplay({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -189,11 +204,11 @@ class CounterDisplay extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            if (bloobit.isProcessing)
+            if (bloobit.state.isProcessing)
               const CircularProgressIndicator()
             else
               Text(
-                '${bloobit.callCount}',
+                '${bloobit.state.callCount}',
                 style: Theme.of(context).textTheme.headline4,
               ),
           ],
