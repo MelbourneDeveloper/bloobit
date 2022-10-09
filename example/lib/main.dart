@@ -58,6 +58,7 @@ class CountServerService {
         //If we return _counter++ the value is incorrect. Something strange here
         // ignore: join_return_with_assignment
         _counter++;
+
         return _counter;
       });
 }
@@ -132,6 +133,7 @@ class _HomeState extends
   @override
   Widget build(BuildContext context) {
     final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
+
     return Scaffold(
       appBar: AppBar(
         title:
@@ -148,7 +150,7 @@ class _HomeState extends
                 CounterDisplay(),
                 CounterDisplay(),
                 CounterDisplay(),
-                CounterDisplay()
+                CounterDisplay(),
               ],
             )
           else
@@ -166,7 +168,7 @@ class _HomeState extends
                   onPressed: bloobit.hideWidgets,
                   tooltip: 'X',
                   child: const Icon(Icons.close),
-                )
+                ),
               ],
             ),
           ),

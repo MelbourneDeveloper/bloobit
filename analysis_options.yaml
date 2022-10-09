@@ -1,6 +1,8 @@
 include: package:austerity/analysis_options.yaml
 
-
+anlyzer:
+    errors:
+        avoid-ignoring-return-values: warning
 
 dart_code_metrics:
   anti-patterns:
