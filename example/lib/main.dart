@@ -139,8 +139,7 @@ class _HomeState extends
 
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('Managing Up The State with Management-like Managers'),
+        title: const Text('Bloobit Sample'),
       ),
       body: Stack(
         children: [
@@ -189,6 +188,7 @@ class CounterDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
+    
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
