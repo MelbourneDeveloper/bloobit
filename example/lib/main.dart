@@ -102,6 +102,8 @@ IocContainer compose() {
   return builder.toContainer();
 }
 
+const bloobitPropagatorKey = ValueKey('BloobitPropagator');
+
 class MyApp extends StatelessWidget {
   const MyApp(this.container, {super.key});
   final IocContainer container;
@@ -114,6 +116,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: BloobitPropagator<AppBloobit>(
+          key: bloobitPropagatorKey,
           bloobit: container.get<AppBloobit>(),
           child: const Home(),
         ),
@@ -188,7 +191,7 @@ class CounterDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
-    
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(

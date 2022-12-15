@@ -54,8 +54,9 @@ void main() {
       await tester.pumpWidget(MyApp(compose()));
 
       //Get the bloobit and check the state
+
       final bloobitPropagator = tester.widget<BloobitPropagator<AppBloobit>>(
-        find.byKey(const ValueKey('BloobitPropagator')).first,
+        find.byKey(bloobitPropagatorKey).first,
       );
 
       expect(bloobitPropagator.bloobit, isNotNull);
