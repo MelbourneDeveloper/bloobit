@@ -72,7 +72,7 @@ You can easily inspect the state and the `Bloobit` in the widget tree using the 
 ![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
 
 ### BloobitWidget
-This is the easiest way to use bloobit. Put a `BloobitWidget` in the tree and instantiate your bloobit like this. Check out the second example to see how to use bloobit with dependency injection and [ioc_connainer](https://pub.dev/packages/ioc_container).
+This is the easiest way to use bloobit. Put a `BloobitWidget` in the tree and instantiate your bloobit like this. Check out the second example to see how to use bloobit with dependency injection and [ioc_container](https://pub.dev/packages/ioc_container).
 
 ```dart
 class MyApp extends StatelessWidget {
