@@ -72,8 +72,18 @@ extension IocContainerBuilderExtensions on IocContainerBuilder {
     ..addSingleton<Stream<T>>((con) => con.get<StreamController<T>>().stream);
 }
 
+// coverage:ignore-start
 void main() {
-  //Register services and the view model with an IoC container
+  runApp(
+    MyApp(
+      //Register services and the Bloobit with an IoC container
+      compose(),
+    ),
+  );
+}
+// coverage:ignore-end
+
+IocContainer compose() {
   final builder = IocContainerBuilder()
     //A simple singleton service to emulate a server counting calls
     ..addSingletonService(CountServerService())
@@ -89,15 +99,10 @@ void main() {
       ),
     );
 
-  final container = builder.toContainer();
-
-  container
-      .get<Stream<AppState>>()
-      //Stream the state changes to the debug console
-      .listen((appState) => debugPrint(appState.callCount.toString()));
-
-  runApp(MyApp(container));
+  return builder.toContainer();
 }
+
+const bloobitPropagatorKey = ValueKey('BloobitPropagator');
 
 class MyApp extends StatelessWidget {
   const MyApp(this.container, {super.key});
@@ -111,6 +116,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: BloobitPropagator<AppBloobit>(
+          key: bloobitPropagatorKey,
           bloobit: container.get<AppBloobit>(),
           child: const Home(),
         ),
@@ -185,7 +191,7 @@ class CounterDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
-    
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
