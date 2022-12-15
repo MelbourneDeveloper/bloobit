@@ -1,12 +1,31 @@
-import 'package:bloobit/bloobit.dart';
+// ignore_for_file: avoid_relative_lib_imports
 
+import 'package:bloobit/bloobit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// ignore: avoid_relative_lib_imports
+import '../example/lib/main.dart';
 import '../example/lib/main2.dart';
 
 void main() {
+  //The traditional counter increments smoke test
+  testWidgets('Counter increments smoke test', (tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MyApp());
+
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
+
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
+  });
+
   testWidgets(
     //This tests the example app and therefore the Bloobit library
     //It is a good example of how to test Bloobit apps
@@ -22,11 +41,11 @@ void main() {
       //Note: streams are not a core part of Bloobit but we can attach them and
       //this test here is to ensure that onSetState is working
       container
-          .get<Stream<AppState>>()
+          .get<Stream<AppState2>>()
           //Stream the state changes to the debug console
           .listen((appState) => streamCount++);
 
-      await tester.pumpWidget(MyApp(container));
+      await tester.pumpWidget(MyApp2(container));
 
       //Tap increment button
       await tester.tap(find.byIcon(Icons.add));
@@ -54,11 +73,11 @@ void main() {
     //need to do this.
     'Test The Example App With Bloobit Access',
     (tester) async {
-      await tester.pumpWidget(MyApp(compose()));
+      await tester.pumpWidget(MyApp2(compose()));
 
       //Get the bloobit and check the state
 
-      final bloobitPropagator = tester.widget<BloobitPropagator<AppBloobit>>(
+      final bloobitPropagator = tester.widget<BloobitPropagator<AppBloobit2>>(
         find.byKey(bloobitPropagatorKey).first,
       );
 

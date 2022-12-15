@@ -8,8 +8,8 @@ import 'package:ioc_container/ioc_container.dart';
 
 ///The immutable state of the app
 @immutable
-class AppState {
-  const AppState(
+class AppState2 {
+  const AppState2(
     this.callCount,
     this.isProcessing,
     this.displayWidgets,
@@ -18,12 +18,12 @@ class AppState {
   final bool isProcessing;
   final bool displayWidgets;
 
-  AppState copyWith({
+  AppState2 copyWith({
     int? callCount,
     bool? isProcessing,
     bool? displayWidgets,
   }) =>
-      AppState(
+      AppState2(
         callCount ?? this.callCount,
         isProcessing ?? this.isProcessing,
         displayWidgets ?? this.displayWidgets,
@@ -32,9 +32,9 @@ class AppState {
 
 ///This extends `Bloobit` and implements the business logic with methods.
 ///When the state changes, we call `setState()`
-class AppBloobit extends Bloobit<AppState> {
-  AppBloobit(this.countServerService, {void Function(AppState)? onSetState})
-      : super(const AppState(0, false, true), onSetState: onSetState);
+class AppBloobit2 extends Bloobit<AppState2> {
+  AppBloobit2(this.countServerService, {void Function(AppState2)? onSetState})
+      : super(const AppState2(0, false, true), onSetState: onSetState);
   final CountServerService countServerService;
 
   void hideWidgets() {
@@ -75,7 +75,7 @@ extension IocContainerBuilderExtensions on IocContainerBuilder {
 // coverage:ignore-start
 void main() {
   runApp(
-    MyApp(
+    MyApp2(
       //Register services and the Bloobit with an IoC container
       compose(),
     ),
@@ -88,14 +88,14 @@ IocContainer compose() {
     //A simple singleton service to emulate a server counting calls
     ..addSingletonService(CountServerService())
     //Adds a Stream for AppState changes
-    ..addStream<AppState>()
+    ..addStream<AppState2>()
     //The Bloobit
     ..addSingleton(
-      (con) => AppBloobit(
+      (con) => AppBloobit2(
         con.get<CountServerService>(),
         onSetState: (s) =>
             //Streams state changes to the AppState stream
-            con.get<StreamController<AppState>>().add(s),
+            con.get<StreamController<AppState2>>().add(s),
       ),
     );
 
@@ -104,8 +104,8 @@ IocContainer compose() {
 
 const bloobitPropagatorKey = ValueKey('BloobitPropagator');
 
-class MyApp extends StatelessWidget {
-  const MyApp(this.container, {super.key});
+class MyApp2 extends StatelessWidget {
+  const MyApp2(this.container, {super.key});
   final IocContainer container;
 
   @override
@@ -115,9 +115,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: BloobitPropagator<AppBloobit>(
+        home: BloobitPropagator<AppBloobit2>(
           key: bloobitPropagatorKey,
-          bloobit: container.get<AppBloobit>(),
+          bloobit: container.get<AppBloobit2>(),
           child: const Home(),
         ),
       );
@@ -135,10 +135,10 @@ class _HomeState extends
     State<Home>
     with
         //This automatically adds the ability to call setState() on the model
-        AttachesSetState<Home, AppBloobit> {
+        AttachesSetState<Home, AppBloobit2> {
   @override
   Widget build(BuildContext context) {
-    final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
+    final bloobit = BloobitPropagator.of<AppBloobit2>(context).bloobit;
 
     return Scaffold(
       appBar: AppBar(
@@ -190,7 +190,7 @@ class CounterDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloobit = BloobitPropagator.of<AppBloobit>(context).bloobit;
+    final bloobit = BloobitPropagator.of<AppBloobit2>(context).bloobit;
 
     return Padding(
       padding: const EdgeInsets.all(10),
