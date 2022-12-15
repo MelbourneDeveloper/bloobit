@@ -1,10 +1,12 @@
 ## State management, as simple as it gets
 
-[Flutter Sample and code on Dartpad](https://dartpad.dev/?id=47b6619b67348dbd3c53e3563463a707)
+[Flutter Sample and code on Dartpad](https://dartpad.dev/?id=852bb434276d46775f61d74ece554209)
 
-Bloobit is a state management approach inspired by [Cubit](https://pub.dev/packages/bloc) but without streams (or any [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern)) by default. Bloobit and the Bloc pattern aim to separate presentation from business logic, but Bloobit is not an implementation of the Bloc pattern. You just call `setState()` when the state changes. There is no magic. There are only [90 lines of code](https://github.com/MelbourneDeveloper/bloobit/blob/main/lib/bloobit.dart) that you can read and understand.
+Bloobit is a state management approach inspired by the BloC pattern, but without streams (or any [observer pattern](https://en.wikipedia.org/wiki/Observer_pattern)) by default. Bloobit and the BloC pattern aim to separate presentation from business logic, but Bloobit is not an implementation of the Bloc pattern. You just call `setState()` when the state changes. There is no magic. There are only around [100 lines of code, depending on who's counting](https://github.com/MelbourneDeveloper/bloobit/blob/main/lib/bloobit.dart). You can read and understand the code.
 
-Cubit is an implementation of the Bloc pattern in the [Bloc library](https://bloclibrary.dev/#/). It remains the most popular Bloc library, and I recommend it if you intend to follow the Bloc pattern. Bloobit is an experimental library, and I make no guarantees about using it in production yet.
+If you need to follow the BloC pattern, I recommend [Cubit](https://pub.dev/documentation/bloc/latest/bloc/Cubit-class.html) in the [Bloc library](https://bloclibrary.dev/#/).
+
+Bloobit is currently in beta but getting closer to a full release.
 
 ### Implement Business Logic
 Extend [`Bloobit<TState>`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit-class.html) and send messages or events to the `Bloobit` via the methods. Call [`setState`](https://pub.dev/documentation/bloobit/latest/bloobit/Bloobit/setState.html) when the state changes. 
@@ -66,10 +68,34 @@ class AppState {
 }
 ```
 
-Using the dev tools, you can easily inspect the state and the `Bloobit` in the widget tree. See the next section about the [`BloobitPropagator`](https://pub.dev/documentation/bloobit/latest/bloobit/BloobitPropagator-class.html)
+You can easily inspect the state and the `Bloobit` in the widget tree using the dev tools. See the next section about the [`BloobitPropagator`](https://pub.dev/documentation/bloobit/latest/bloobit/BloobitPropagator-class.html)
 ![dev tools](https://github.com/MelbourneDeveloper/bloobit/blob/main/images/widgettreestate.png)
 
-### Put the Bloobit in the Widget Tree
+### BloobitWidget
+This is the easiest way to use bloobit. Put a `BloobitWidget` in the tree and instantiate your bloobit like this. Check out the second example to see how to use bloobit with dependency injection and [ioc_connainer](https://pub.dev/packages/ioc_container).
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Bloobit Sample',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: BloobitWidget<AppBloobit>(
+          bloobit: AppBloobit(),
+          builder: (context, bloobit) => MyHomePage(
+            title: 'Bloobit Sample',
+            bloobit: bloobit,
+          ),
+        ),
+      );
+}
+```
+
+### Expose Bloobit Throughout the Widget Tree
 If you want to nest widgets, you need to wrap your widgets in a `BloobitPropagator`. This is an [InheritedWidget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html). The `BloobitPropagator` will pass the Bloobit to the children. 
 
 ```dart
@@ -133,7 +159,7 @@ class CounterDisplay extends StatelessWidget {
 ```
 
 ### Convert To a Stream
-Bloobit is designed to work with only one `StatefulWidget`. As you can see in the example, you don't mutliple `StatefulWidgets` to power multiple child widgets. Bloc is designed to work with many, but most of the time, it is not necessary to work with multiple `StatefulWidget`s. However, you can stream state changes from the `Bloobit` and use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming for multiple listeners.  See the example folder for the streaming code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) or multiple other `StatefulWidget`s.
+Bloobit is designed to work with only one `StatefulWidget`. As you can see in the example, you don't mutliple `StatefulWidgets` to power multiple child widgets. Bloc is designed to work with many, but most of the time, it is not necessary to work with multiple `StatefulWidget's. However, you can stream state changes from the `Bloobit` and use the [ioc_container](https://pub.dev/packages/ioc_container) package to wire up streaming for multiple listeners. See the example folder for the streaming code. You could use this with [StreamBuilder](https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html) or multiple other `StatefulWidget's.
 
 ```dart
 void main() {
