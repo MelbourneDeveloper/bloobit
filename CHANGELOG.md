@@ -14,4 +14,6 @@ Documentation fixes
 Don't call `setState` if `State` is not mounted
 ## 1.0.4-beta
 Add `BloobitWidget` to fill in for `StatefulWidget`
+## 1.0.5-beta
+Add a simpler example that uses BloobitPropagator
 

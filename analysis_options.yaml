@@ -3,6 +3,7 @@ include: package:austerity/analysis_options.yaml
 anlyzer:
     errors:
         avoid-ignoring-return-values: warning
+        depend_on_referenced_packages: ignore
 
 dart_code_metrics:
   anti-patterns:
