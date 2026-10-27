@@ -41,47 +41,36 @@ class MyApp extends StatelessWidget {
         ),
         home: BloobitWidget<AppBloobit>(
           bloobit: AppBloobit(CountServerService()),
-          builder: (context, bloobit) => Home(
-            bloobit,
-          ),
-        ),
-      );
-}
-
-class Home extends StatelessWidget {
-  const Home(this.bloobit, {super.key});
-
-  final AppBloobit bloobit;
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Bloobit Example'),
-        ),
-        body: Stack(
-          children: [
-            if (bloobit.state.displayWidgets)
-              CounterDisplay(bloobit.state)
-            else
-              Text('X', style: Theme.of(context).textTheme.headline1),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                children: [
-                  FloatingActionButton(
-                    onPressed: bloobit.callGetCount,
-                    tooltip: 'Increment',
-                    child: const Icon(Icons.add),
-                  ),
-                  FloatingActionButton(
-                    onPressed: bloobit.hideWidgets,
-                    tooltip: 'X',
-                    child: const Icon(Icons.close),
-                  )
-                ],
-              ),
+          builder: (context, bloobit) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Bloobit Example'),
             ),
-          ],
+            body: Stack(
+              children: [
+                if (bloobit.state.displayWidgets)
+                  CounterDisplay(bloobit.state)
+                else
+                  Text('X', style: Theme.of(context).textTheme.headline1),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    children: [
+                      FloatingActionButton(
+                        onPressed: bloobit.callGetCount,
+                        tooltip: 'Increment',
+                        child: const Icon(Icons.add),
+                      ),
+                      FloatingActionButton(
+                        onPressed: bloobit.hideWidgets,
+                        tooltip: 'X',
+                        child: const Icon(Icons.close),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       );
 }
